@@ -1,58 +1,62 @@
+import tkinter as tk
 import random
-from tkinter import *
 
-root = Tk()
-root.geometry("500x500")
-root.title("Rock Paper N Scissors Game")
+user_score = 0
+computer_score = 0
 
-choice = [1,2,3]
-
-def rock():
-    computerplay = random.choice(choice)
-    myplay = 1
-    print(computerplay)
-    if(myplay==computerplay):
-        result.config(text="Computer's Play is Rock so its a Draw")
-    elif(computerplay==2):
-        result.config(text="Computer's Play is Paper so you loose")
-    elif(computerplay==3):
-        result.config(text="Computer's Play is Scissor so you Won")
+def play_game(user_choice):
+    global user_score, computer_score
+    computer_choice = random.choice(["Rock", "Paper", "Scissors"])
+    result = ""
     
-def paper():
-    computerplay = random.choice(choice)
-    myplay = 2
-    print(computerplay)
-    if(myplay==computerplay):
-        result.config(text="Computer's Play is Rock so you Won")
-    elif(computerplay==2):
-        result.config(text="Computer's Play is Paper so its a Draw")
-    elif(computerplay==3):
-        result.config(text="Computer's Play is Scissor so you Loose")
+    if user_choice == computer_choice:
+        result = "It's a Tie!"
+    elif (user_choice == "Rock" and computer_choice == "Scissors") or \
+         (user_choice == "Scissors" and computer_choice == "Paper") or \
+         (user_choice == "Paper" and computer_choice == "Rock"):
+        result = "You Win!"
+        user_score += 1
+    else:
+        result = "You Lose!"
+        computer_score += 1
 
-def scissor():
-    computerplay = random.choice(choice)
-    myplay = 3
-    print(computerplay)
-    if(myplay==computerplay):
-        result.config(text="Computer's Play is Rock so you Loose")
-    elif(computerplay==2):
-        result.config(text="Computer's Play is Paper so you Won")
-    elif(computerplay==3):
-        result.config(text="Computer's Play is Scissor so its a Draw")
-    
-        
+    result_label.config(text=f"User: {user_choice} | Computer: {computer_choice}\n{result}")
+    score_label.config(text=f"User Score: {user_score} | Computer Score: {computer_score}")
 
-Label(root,text="Choose one of the following:",font="helvica 15 bold").grid(row=1,column=1,padx=55,pady=15)
+def reset_game():
+    global user_score, computer_score
+    user_score = 0
+    computer_score = 0
+    result_label.config(text="")
+    score_label.config(text=f"User Score: {user_score} | Computer Score: {computer_score}")
 
-rockbtn = Button(root,text="Rock",command=rock)
-rockbtn.grid(row=2,column=1,padx=5,pady=5)
+root = tk.Tk()
+root.title("Rock, Paper, Scissors")
+root.geometry("400x400")
+root.config(bg="#f0f4f7")
 
-paperbtn = Button(root,text="Paper",command=paper)
-paperbtn.grid(row=3,column=1,padx=5,pady=5)
+title_label = tk.Label(root, text="Rock, Paper, Scissors", font=("Arial", 18), bg="#f0f4f7")
+title_label.pack(pady=20)
 
-scissorbtn = Button(root,text="Scissor",command=scissor)
-scissorbtn.grid(row=4,column=1,padx=5,pady=5)
+button_frame = tk.Frame(root, bg="#e3e6ea", bd=2, relief="sunken")
+button_frame.pack(pady=10)
 
-result = Label(root,text="",font="helvica 15 bold")
-result.grid(row=5,column=1)
+rock_button = tk.Button(button_frame, text="Rock", font=("Arial", 14), bg="#6c8ebf", fg="white", command=lambda: play_game("Rock"))
+rock_button.grid(row=0, column=0, padx=10, pady=10)
+
+paper_button = tk.Button(button_frame, text="Paper", font=("Arial", 14), bg="#6c8ebf", fg="white", command=lambda: play_game("Paper"))
+paper_button.grid(row=0, column=1, padx=10, pady=10)
+
+scissors_button = tk.Button(button_frame, text="Scissors", font=("Arial", 14), bg="#6c8ebf", fg="white", command=lambda: play_game("Scissors"))
+scissors_button.grid(row=0, column=2, padx=10, pady=10)
+
+result_label = tk.Label(root, text="", font=("Arial", 16), bg="#f0f4f7")
+result_label.pack(pady=20)
+
+score_label = tk.Label(root, text="User Score: 0 | Computer Score: 0", font=("Arial", 16), bg="#f0f4f7")
+score_label.pack(pady=10)
+
+reset_button = tk.Button(root, text="Reset Game", font=("Arial", 14), bg="#ff6f61", fg="white", command=reset_game)
+reset_button.pack(pady=10)
+
 root.mainloop()
