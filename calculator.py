@@ -1,52 +1,46 @@
-from tkinter import *
+import tkinter as tk
 
-root = Tk()
-root.geometry("500x500")
-root.title("Calculator")
+def calculate():
+    num1 = float(entry_num1.get())
+    num2 = float(entry_num2.get())
+    operation = operation_var.get()
+    
+    if operation == "+":
+        result = num1 + num2
+    elif operation == "-":
+        result = num1 - num2
+    elif operation == "*":
+        result = num1 * num2
+    elif operation == "/":
+        result = num1 / num2 if num2 != 0 else 'Error'
+    else:
+        result = 'Invalid Operation'
+    
+    result_label.config(text=f"Result: {result}")
 
-global resultnum
-resultnum = 0
+root = tk.Tk()
+root.title("Simple Calculator-Codsoft")
+root.geometry("300x400")
+root.config(bg="#f0f4f7")
 
-def sumnumber():
-    global resultnum
-    resultnum = int(firstnumber.get()) + int(secondnumber.get())
-    result_label.config(text=resultnum) 
-def subtractnum():
-    global resultnum
-    resultnum = int(firstnumber.get()) - int(secondnumber.get())
-    result_label.config(text=resultnum) 
-def mulnumber():
-    global resultnum
-    resultnum = int(firstnumber.get()) * int(secondnumber.get())
-    result_label.config(text=resultnum) 
-def divnumber():
-    global resultnum
-    resultnum = int(firstnumber.get()) / int(secondnumber.get())
-    result_label.config(text=resultnum) 
+frame = tk.Frame(root, bg="#e3e6ea", bd=2, relief="sunken")
+frame.pack(pady=20, padx=20)
 
+entry_num1 = tk.Entry(frame, font=("Arial", 16), bd=2)
+entry_num1.grid(row=0, column=0, padx=10, pady=10)
 
+entry_num2 = tk.Entry(frame, font=("Arial", 16), bd=2)
+entry_num2.grid(row=1, column=0, padx=10, pady=10)
 
-Label(root, text="Enter your first number").grid(row=1, column=1)
-firstnumber = StringVar()
-firstentry = Entry(root, textvariable=firstnumber)
-firstentry.grid(row=1, column=2)
+operation_var = tk.StringVar()
+operation_menu = tk.OptionMenu(frame, operation_var, "+", "-", "*", "/")
+operation_menu.grid(row=2, column=0, padx=10, pady=10)
 
-Label(root, text="Enter your second number").grid(row=2, column=1)
-secondnumber = StringVar()
-secondentry = Entry(root, textvariable=secondnumber)
-secondentry.grid(row=2, column=2)
+calculate_button = tk.Button(frame, text="Calculate", font=("Arial", 14), bg="#6c8ebf", fg="white", command=calculate)
+calculate_button.grid(row=3, column=0, padx=10, pady=10)
 
-addbtn = Button(root, text="+", command=sumnumber)
-addbtn.grid(row=3, column=1)
-subbtn = Button(root, text="-", command=subtractnum)
-subbtn.grid(row=3, column=2)
-mulbtn = Button(root, text="*", command=mulnumber)
-mulbtn.grid(row=4, column=1)
-divbtn = Button(root, text="/", command=divnumber)
-divbtn.grid(row=4, column=2)
-
-Label(root, text="Results:").grid(row=5, column=1)
-result_label = Label(root, text=str(resultnum)) 
-result_label.grid(row=5, column=2)
+result_label = tk.Label(root, text="Result: ", font=("Arial", 16), bg="#f0f4f7")
+result_label.pack(pady=20)
 
 root.mainloop()
+
